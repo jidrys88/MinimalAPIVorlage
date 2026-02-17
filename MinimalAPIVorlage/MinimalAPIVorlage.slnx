@@ -1,3 +1,7 @@
 <Solution>
+  <Project Path="DataHandler/DataHandler.csproj" Id="f07f2e37-8bf3-45a5-8836-e35cf9383116" />
+  <Project Path="DataModels/DataModels.csproj" Id="970069d3-9545-4a95-99b1-1ba9f70698c1" />
+  <Project Path="DBUmgebung/DBUmgebung.csproj" Id="bdad3ede-0ccb-4607-91db-449836def822" />
   <Project Path="MinimalAPIVorlage/MinimalAPIVorlage.csproj" />
+  <Project Path="Services/Services.csproj" Id="8d413a28-8ef7-4837-96c9-9b29fc41830d" />
 </Solution>
