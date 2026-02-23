@@ -24,6 +24,7 @@ Diese Lösung ist eine saubere Minimal API Architektur mit:
 
 
 🔄 Architektur
+
 Minimal API
 
     ↓
