@@ -25,15 +25,19 @@ Diese Lösung ist eine saubere Minimal API Architektur mit:
 
 🔄 Architektur
 Minimal API
+
     ↓
     
 Service (Business Logic)
+
     ↓
     
 DataHandler (Datenzugriff)
+
     ↓
     
 Generic Repository
+
     ↓
     
 DbContext (SQLite)
