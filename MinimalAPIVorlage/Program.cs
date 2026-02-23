@@ -3,6 +3,7 @@ using DataModels.Entities;
 using DBUmgebung;
 using DBUmgebung.Repositories;
 using Microsoft.EntityFrameworkCore;
+using MinimalAPIVorlage.EndPoints;
 using ProduktService;
 using ProduktService.Interfaces;
 
@@ -26,6 +27,9 @@ builder.Services.AddScoped(typeof(IGenericDataHandler<>), typeof(GenericDataHand
 builder.Services.AddScoped<IProductDataHandler, ProductDataHandler>();
 builder.Services.AddScoped<IProductService, ProductService>();
 
+// Endpoint-Registrierung
+builder.Services.AddScoped<IEndpointDefinition, ProductEndpoints>();
+
 var app = builder.Build();
 
 // 🔹 Swagger Middleware
@@ -35,26 +39,9 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI(); // Standard: /swagger
 }
 
-app.MapGet("/products", async (IProductService service) =>
-    await service.GetAllAsync())
-     .WithTags("Products")
-    .WithOpenApi();
+app.UseHttpsRedirection();
 
-app.MapPost("/products", async (
-    IProductService service,
-    Common.ApiRequest<Product> request) =>
-        await service.CreateAsync(request))
-     .WithTags("Products")
-    .WithOpenApi();
-
-app.MapGet("/products/{id:int}", async (int id, IProductService service) =>
-        await service.GetByIdAsync(id))
-    .WithTags("Products")
-    .WithOpenApi();
-
-app.MapDelete("/products/{id:int}", async (int id, IProductService service) =>
-        await service.DeleteAsync(id))
-    .WithTags("Products")
-    .WithOpenApi();
+// ALLE Endpoints hier
+app.RegisterEndpoints();
 
 app.Run();
