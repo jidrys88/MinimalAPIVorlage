@@ -29,5 +29,17 @@ namespace DataHandler
             await _repository.SaveAsync();
             return entity;
         }
+        public async Task<bool> DeleteAsync(int id)
+        {
+            var entity = await _repository.GetByIdAsync(id);
+
+            if (entity == null)
+                return false;
+
+            await _repository.DeleteAsync(entity);
+            await _repository.SaveAsync();
+
+            return true;
+        }
     }
 }

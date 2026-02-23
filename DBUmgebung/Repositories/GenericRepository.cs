@@ -32,5 +32,11 @@ namespace DBUmgebung.Repositories
 
         public async Task SaveAsync() =>
             await _context.SaveChangesAsync();
+
+        public async Task DeleteAsync(T entity)
+        {
+            _dbSet.Remove(entity);
+            await Task.CompletedTask;
+        }
     }
 }

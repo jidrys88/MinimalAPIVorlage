@@ -21,5 +21,9 @@ namespace DataHandler
 
         public async Task<Product> CreateProductAsync(Product product)
             => await CreateAsync(product);
+
+        public async Task<bool> DeleteProductAsync(int id)
+                 => await DeleteAsync(id);
+
     }
 }
