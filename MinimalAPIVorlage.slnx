@@ -1,0 +1,8 @@
+<Solution>
+  <Project Path="Common/Common.csproj" />
+  <Project Path="DataHandler/DataHandler.csproj" />
+  <Project Path="DataModels/DataModels.csproj" />
+  <Project Path="DBUmgebung/DBUmgebung.csproj" />
+  <Project Path="MinimalAPIVorlage/MinimalAPIVorlage.csproj" />
+  <Project Path="ProduktService/ProduktService.csproj" />
+</Solution>
