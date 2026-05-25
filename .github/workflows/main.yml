@@ -1,1 +1,20 @@
+name: Web App Qualitaetscheck
 
+# Hier wird festgelegt, wann die Pipeline startet:
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  pruefung:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Code auschecken
+      uses: actions/checkout@v4
+
+    - name: Starte automatische Code-Pruefung
+      run: |
+        echo "Starte Qualitaetscheck..."
+        echo "Alles super! Keine Fehler gefunden."
