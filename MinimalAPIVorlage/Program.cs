@@ -7,6 +7,8 @@ using MinimalAPIVorlage.EndPoints;
 using ProduktService;
 using ProduktService.Interfaces;
 
+// test Github
+
 var builder = WebApplication.CreateBuilder(args);
 
 // SQLite
