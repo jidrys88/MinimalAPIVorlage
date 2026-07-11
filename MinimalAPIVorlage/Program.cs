@@ -11,10 +11,10 @@ using ProduktService.Interfaces;
 var builder = WebApplication.CreateBuilder(args);
 
 // SQLite
-string binPath = AppContext.BaseDirectory;
-string dbPath = Path.Combine(binPath, "MeinDB.db");
+var connectionString = builder.Configuration.GetConnectionString("Default")
+    ?? throw new InvalidOperationException("ConnectionString 'Default' fehlt in appsettings.json");
 
-builder.Services.AddDatabase($"Data Source={dbPath}");
+builder.Services.AddDatabase(connectionString);
 
 
 // 🔹 Swagger Services
