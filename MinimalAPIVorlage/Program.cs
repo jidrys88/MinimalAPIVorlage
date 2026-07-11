@@ -29,7 +29,16 @@ builder.Services.AddScoped<IProductService, ProductService>();
 // Endpoint-Registrierung
 builder.Services.AddScoped<IEndpointDefinition, ProductEndpoints>();
 
+
+
 var app = builder.Build();
+
+// Ausstehende Migrationen automatisch anwenden
+using (var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+    db.Database.Migrate();
+}
 
 // 🔹 Swagger Middleware
 if (app.Environment.IsDevelopment())
