@@ -11,10 +11,10 @@ using ProduktService.Interfaces;
 var builder = WebApplication.CreateBuilder(args);
 
 // SQLite
-var connectionString = builder.Configuration.GetConnectionString("Default")
-    ?? throw new InvalidOperationException("ConnectionString 'Default' fehlt in appsettings.json");
+string binPath = AppContext.BaseDirectory;
+string dbPath = Path.Combine(binPath, "MeinDB.db");
 
-builder.Services.AddDatabase(connectionString);
+builder.Services.AddDatabase($"Data Source={dbPath}");
 
 
 // 🔹 Swagger Services
@@ -29,16 +29,20 @@ builder.Services.AddScoped<IProductService, ProductService>();
 // Endpoint-Registrierung
 builder.Services.AddScoped<IEndpointDefinition, ProductEndpoints>();
 
+// 🔹 CORS - Vorlage erlaubt aktuell ein lokales Dev-Frontend.
+// Vor Produktivbetrieb unbedingt an die echten Frontend-Origins anpassen
+// (siehe README, Abschnitt "Sicherheitshinweis").
+const string CorsPolicyName = "DefaultCorsPolicy";
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(CorsPolicyName, policy =>
+        policy.WithOrigins("https://localhost:3000", "http://localhost:3000")
+              .AllowAnyHeader()
+              .AllowAnyMethod());
+});
 
 var app = builder.Build();
-
-// Ausstehende Migrationen automatisch anwenden
-using (var scope = app.Services.CreateScope())
-{
-    var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-    db.Database.Migrate();
-}
 
 // 🔹 Swagger Middleware
 if (app.Environment.IsDevelopment())
@@ -48,6 +52,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseCors(CorsPolicyName);
 
 // ALLE Endpoints hier
 app.RegisterEndpoints();

@@ -112,6 +112,19 @@ Beispiel-Body für POST/PUT:
 }
 ```
 
+⚠️ Sicherheitshinweis
+
+Diese Vorlage enthält aktuell **keine Authentifizierung/Autorisierung**.
+CORS ist nur mit einer Beispiel-Policy für ein lokales Dev-Frontend
+(`https://localhost:3000`) vorkonfiguriert. Sie ist als Ausgangspunkt für
+die Architektur gedacht, nicht für den produktiven Einsatz. Vor
+Produktivbetrieb unbedingt ergänzen/anpassen:
+
+- Authentifizierung (z. B. JWT Bearer oder ASP.NET Core Identity)
+- Autorisierung pro Endpoint (`.RequireAuthorization()`)
+- CORS-Policy in `Program.cs` auf die tatsächlichen Frontend-Origins
+  einschränken (aktuelle Beispiel-Origin entfernen/ersetzen)
+
 📌 Technologien
 
 .NET 8
