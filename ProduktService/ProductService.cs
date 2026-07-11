@@ -81,5 +81,54 @@ namespace ProduktService
 
             return ApiResponse<bool>.Ok(true);
         }
+        public async Task<ApiResponse<PagedResult<ProductDto>>> GetPagedAsync(int page, int pageSize)
+        {
+            if (page < 1) page = 1;
+            if (pageSize < 1 || pageSize > 100) pageSize = 20;
+
+            var (items, totalCount) = await _repository.GetPagedAsync(page, pageSize);
+
+            var result = new PagedResult<ProductDto>
+            {
+                Items = items.Select(p => p.ToDto()).ToList(),
+                TotalCount = totalCount,
+                Page = page,
+                PageSize = pageSize
+            };
+
+            return ApiResponse<PagedResult<ProductDto>>.Ok(result);
+        }
+        public async Task<ApiResponse<List<ProductDto>>> CreateManyAsync(ApiRequest<List<ProductRequestDto>> request)
+        {
+            if (request.Data == null || request.Data.Count == 0)
+                return ApiResponse<List<ProductDto>>.Fail("Produktdaten fehlen");
+
+            var allErrors = new List<string>();
+            var products = new List<Product>();
+
+            for (int i = 0; i < request.Data.Count; i++)
+            {
+                var dto = request.Data[i];
+                var errors = ValidationHelper.Validate(dto);
+
+                if (errors.Count > 0)
+                {
+                    allErrors.AddRange(errors.Select(e => $"Produkt #{i + 1}: {e}"));
+                    continue;
+                }
+
+                products.Add(dto.ToEntity());
+            }
+
+            if (allErrors.Count > 0)
+                return ApiResponse<List<ProductDto>>.Fail("Validierung fehlgeschlagen", allErrors);
+
+            foreach (var product in products)
+                await _repository.AddAsync(product);
+
+            await _repository.SaveAsync();
+
+            return ApiResponse<List<ProductDto>>.Ok(products.Select(p => p.ToDto()).ToList());
+        }
     }
 }

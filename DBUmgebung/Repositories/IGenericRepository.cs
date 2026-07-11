@@ -9,6 +9,7 @@ namespace DBUmgebung.Repositories
     public interface IGenericRepository<T> where T : class
     {
         Task<List<T>> GetAllAsync();
+        Task<(List<T> Items, int TotalCount)> GetPagedAsync(int page, int pageSize);
         Task<T?> GetByIdAsync(int id);
         Task AddAsync(T entity);
         Task DeleteAsync(T entity);

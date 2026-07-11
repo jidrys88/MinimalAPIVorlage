@@ -37,6 +37,21 @@ namespace MinimalAPIVorlage.EndPoints
                     await service.DeleteAsync(id))
                 .WithTags("Products")
                 .WithOpenApi();
+
+            app.MapGet("/products/paged", async (
+                IProductService service,
+                int page = 1,
+                int pageSize = 20) =>
+                    await service.GetPagedAsync(page, pageSize))
+                .WithTags("Products")
+                .WithOpenApi();
+
+            app.MapPost("/products/bulk", async (
+                IProductService service,
+                ApiRequest<List<ProductRequestDto>> request) =>
+                    await service.CreateManyAsync(request))
+                .WithTags("Products")
+                .WithOpenApi();
         }
     }
 }
