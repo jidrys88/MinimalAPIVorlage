@@ -1,5 +1,6 @@
 ﻿namespace DataModels.Entities
 {
+    // test Github Konto
     public class Product
     {
         public int Id { get; set; }
