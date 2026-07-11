@@ -7,7 +7,7 @@ using MinimalAPIVorlage.EndPoints;
 using ProduktService;
 using ProduktService.Interfaces;
 
-// test Github
+// Test Github
 
 var builder = WebApplication.CreateBuilder(args);
 
