@@ -1,5 +1,5 @@
 ﻿using Common;
-using DataModels.Entities;
+using DataModels.Dtos;
 using ProduktService.Interfaces;
 
 namespace MinimalAPIVorlage.EndPoints
@@ -20,8 +20,16 @@ namespace MinimalAPIVorlage.EndPoints
 
             app.MapPost("/products", async (
                     IProductService service,
-                    ApiRequest<Product> request) =>
+                    ApiRequest<ProductRequestDto> request) =>
                         await service.CreateAsync(request))
+                .WithTags("Products")
+                .WithOpenApi();
+
+            app.MapPut("/products/{id:int}", async (
+                    int id,
+                    IProductService service,
+                    ApiRequest<ProductRequestDto> request) =>
+                        await service.UpdateAsync(id, request))
                 .WithTags("Products")
                 .WithOpenApi();
 
