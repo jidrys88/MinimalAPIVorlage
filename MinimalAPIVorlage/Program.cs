@@ -1,4 +1,3 @@
-using DataHandler;
 using DataModels.Entities;
 using DBUmgebung;
 using DBUmgebung.Repositories;
@@ -24,9 +23,7 @@ builder.Services.AddSwaggerGen();
 
 // DI
 builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
-builder.Services.AddScoped(typeof(IGenericDataHandler<>), typeof(GenericDataHandler<>));
 
-builder.Services.AddScoped<IProductDataHandler, ProductDataHandler>();
 builder.Services.AddScoped<IProductService, ProductService>();
 
 // Endpoint-Registrierung

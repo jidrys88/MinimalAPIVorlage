@@ -8,8 +8,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Common\Common.csproj" />
-    <ProjectReference Include="..\DataHandler\DataHandler.csproj" />
     <ProjectReference Include="..\DataModels\DataModels.csproj" />
+    <ProjectReference Include="..\DBUmgebung\DBUmgebung.csproj" />
   </ItemGroup>
 
 </Project>

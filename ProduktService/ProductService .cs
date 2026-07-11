@@ -1,6 +1,6 @@
 ﻿using Common;
-using DataHandler;
 using DataModels.Entities;
+using DBUmgebung.Repositories;
 using ProduktService.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -12,16 +12,16 @@ namespace ProduktService
 {
     public class ProductService : IProductService
     {
-        private readonly IProductDataHandler _dataHandler;
+        private readonly IGenericRepository<Product> _repository;
 
-        public ProductService(IProductDataHandler dataHandler)
+        public ProductService(IGenericRepository<Product> repository)
         {
-            _dataHandler = dataHandler;
+            _repository = repository;
         }
 
         public async Task<ApiResponse<List<Product>>> GetAllAsync()
         {
-            var products = await _dataHandler.GetProductsAsync();
+            var products = await _repository.GetAllAsync();
             return ApiResponse<List<Product>>.Ok(products);
         }
 
@@ -30,12 +30,15 @@ namespace ProduktService
             if (request.Data == null)
                 return ApiResponse<Product>.Fail("Produktdaten fehlen");
 
-            var product = await _dataHandler.CreateProductAsync(request.Data);
-            return ApiResponse<Product>.Ok(product);
+            await _repository.AddAsync(request.Data);
+            await _repository.SaveAsync();
+
+            return ApiResponse<Product>.Ok(request.Data);
         }
+
         public async Task<ApiResponse<Product>> GetByIdAsync(int id)
         {
-            var product = await _dataHandler.GetByIdAsync(id);
+            var product = await _repository.GetByIdAsync(id);
 
             if (product == null)
                 return ApiResponse<Product>.Fail("Produkt nicht gefunden");
@@ -45,10 +48,13 @@ namespace ProduktService
 
         public async Task<ApiResponse<bool>> DeleteAsync(int id)
         {
-            var deleted = await _dataHandler.DeleteProductAsync(id);
+            var product = await _repository.GetByIdAsync(id);
 
-            if (!deleted)
+            if (product == null)
                 return ApiResponse<bool>.Fail("Produkt nicht gefunden");
+
+            await _repository.DeleteAsync(product);
+            await _repository.SaveAsync();
 
             return ApiResponse<bool>.Ok(true);
         }
