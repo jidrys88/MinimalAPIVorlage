@@ -11,19 +11,22 @@ namespace MinimalAPIVorlage.EndPoints
             app.MapGet("/products", async (IProductService service) =>
                     await service.GetAllAsync())
                 .WithTags("Products")
-                .WithOpenApi();
+                .WithOpenApi()
+                .RequireAuthorization();
 
             app.MapGet("/products/{id:int}", async (int id, IProductService service) =>
                     await service.GetByIdAsync(id))
                 .WithTags("Products")
-                .WithOpenApi();
+                .WithOpenApi()
+                .RequireAuthorization();
 
             app.MapPost("/products", async (
                     IProductService service,
                     ApiRequest<ProductRequestDto> request) =>
                         await service.CreateAsync(request))
                 .WithTags("Products")
-                .WithOpenApi();
+                .WithOpenApi()
+                .RequireAuthorization();
 
             app.MapPut("/products/{id:int}", async (
                     int id,
@@ -31,27 +34,14 @@ namespace MinimalAPIVorlage.EndPoints
                     ApiRequest<ProductRequestDto> request) =>
                         await service.UpdateAsync(id, request))
                 .WithTags("Products")
-                .WithOpenApi();
+                .WithOpenApi()
+                .RequireAuthorization();
 
             app.MapDelete("/products/{id:int}", async (int id, IProductService service) =>
                     await service.DeleteAsync(id))
                 .WithTags("Products")
-                .WithOpenApi();
-
-            app.MapGet("/products/paged", async (
-                IProductService service,
-                int page = 1,
-                int pageSize = 20) =>
-                    await service.GetPagedAsync(page, pageSize))
-                .WithTags("Products")
-                .WithOpenApi();
-
-            app.MapPost("/products/bulk", async (
-                IProductService service,
-                ApiRequest<List<ProductRequestDto>> request) =>
-                    await service.CreateManyAsync(request))
-                .WithTags("Products")
-                .WithOpenApi();
+                .WithOpenApi()
+                .RequireAuthorization();
         }
     }
 }
